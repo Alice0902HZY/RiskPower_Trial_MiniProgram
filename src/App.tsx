@@ -22,6 +22,21 @@ export default function App() {
   const [selected, setSelected] = useState<string[]>([]);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [phoneFromWechat, setPhoneFromWechat] = useState(false);
+
+  // 模拟微信 getPhoneNumber 授权：小程序中通过 <button open-type="getPhoneNumber">
+  // 触发授权后，由后端换取用户绑定的手机号。此处以示例号码模拟回填。
+  const useWechatPhone = () => {
+    const boundPhone = "13800138000";
+    setPhone(boundPhone);
+    setPhoneFromWechat(true);
+    setErrors((prev) => ({ ...prev, phone: undefined }));
+  };
+
+  const handlePhoneChange = (v: string) => {
+    setPhone(v.replace(/[^\d]/g, "").slice(0, 11));
+    if (phoneFromWechat) setPhoneFromWechat(false);
+  };
 
   const toggle = (id: string) =>
     setSelected((prev) =>
@@ -220,15 +235,60 @@ export default function App() {
               placeholder="请输入您的姓名"
               error={errors.name}
             />
-            <Field
-              label="手机号"
-              required
-              value={phone}
-              onChange={(v) => setPhone(v.replace(/[^\d]/g, "").slice(0, 11))}
-              placeholder="请输入手机号"
-              inputMode="numeric"
-              error={errors.phone}
-            />
+            {/* 手机号 —— 支持一键获取微信绑定号码 或 手动输入 */}
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <label className="text-sm font-semibold text-slate-700">
+                  手机号<span className="ml-1 text-brand">*</span>
+                </label>
+                {!phoneFromWechat ? (
+                  <button
+                    type="button"
+                    onClick={useWechatPhone}
+                    className="flex items-center gap-1 rounded-full bg-[#07c160]/10 px-2.5 py-1 text-xs font-medium text-[#07c160] transition-colors active:bg-[#07c160]/20"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9.5 3C5.36 3 2 5.79 2 9.24c0 1.94 1.08 3.67 2.77 4.81l-.6 2.05 2.4-1.28c.62.16 1.27.26 1.93.29a5.5 5.5 0 01-.16-1.3c0-3.2 3.03-5.71 6.66-5.71.24 0 .48.01.72.03C15.1 4.86 12.55 3 9.5 3zM7 7.7a.9.9 0 110-1.8.9.9 0 010 1.8zm5 0a.9.9 0 110-1.8.9.9 0 010 1.8z" />
+                      <path d="M22 14.35c0-2.77-2.69-5.02-6-5.02s-6 2.25-6 5.02 2.69 5.01 6 5.01c.6 0 1.18-.08 1.73-.22l1.94 1.06-.5-1.7c1.72-.92 2.83-2.44 2.83-4.15zm-8-.72a.75.75 0 110-1.5.75.75 0 010 1.5zm4 0a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                    </svg>
+                    使用微信绑定手机号
+                  </button>
+                ) : (
+                  <span className="flex items-center gap-1 text-xs font-medium text-[#07c160]">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 12.5l5 5 11-11" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    已获取微信手机号
+                  </span>
+                )}
+              </div>
+              <div className="relative">
+                <input
+                  value={phone}
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  placeholder="请输入手机号，或点击右上角一键获取"
+                  inputMode="numeric"
+                  className={`w-full rounded-xl border bg-slate-50/60 px-4 py-3 text-[15px] text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-brand focus:bg-white focus:ring-4 focus:ring-brand/10 ${
+                    phoneFromWechat ? "pr-16" : ""
+                  } ${errors.phone ? "border-red-300" : "border-slate-200"}`}
+                />
+                {phoneFromWechat && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhone("");
+                      setPhoneFromWechat(false);
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 active:text-slate-600"
+                  >
+                    改用其他
+                  </button>
+                )}
+              </div>
+              {errors.phone && (
+                <p className="mt-1.5 text-xs font-medium text-red-500">{errors.phone}</p>
+              )}
+            </div>
             <Field
               label="邮箱"
               value={email}
