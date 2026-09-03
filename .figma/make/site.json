@@ -1,0 +1,10 @@
+{
+  "description": "Streamline your software trial experience with an intuitive mobile form that captures essential user information and product interests for enhanced process safety.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
