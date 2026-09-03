@@ -9,7 +9,7 @@ const PRODUCTS = [
   { id: "safety-doc-agent", label: "安全专篇审查智能体", desc: "合规智能审查" },
   { id: "ai-sil", label: "AI-SIL", desc: "SIL 定级与验证" },
   { id: "ai-qra", label: "AI-QRA", desc: "定量风险评估" },
-  { id: "ai-moc", label: "AI-MOC", desc: "变更管理" },
+  { id: "ai-moc", label: "AI-MOC", desc: "AI-HAZOP 赋能变更管理" },
 ];
 
 type Errors = Partial<Record<"name" | "phone" | "products", string>>;
