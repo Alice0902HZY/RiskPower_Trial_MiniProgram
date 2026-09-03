@@ -33,7 +33,7 @@ export default function App() {
     if (!name.trim()) e.name = "请输入姓名";
     if (!phone.trim()) e.phone = "请输入手机号";
     else if (!/^1[3-9]\d{9}$/.test(phone.trim()))
-      e.phone = "请输入有效的 11 位手机号";
+      e.phone = "请输入有效的中国大陆手机号（11 位数字）";
     if (selected.length === 0) e.products = "请至少选择一个产品";
     return e;
   };
