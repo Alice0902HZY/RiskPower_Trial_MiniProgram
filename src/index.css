@@ -20,6 +20,12 @@ body {
   color: #14202b;
 }
 
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* hide scrollbars by default, reveal only while scrolling */
 * {
   scrollbar-width: none;

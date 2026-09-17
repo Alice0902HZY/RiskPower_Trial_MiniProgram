@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import gelueLogo from "@/imports/__logo-update-14___.png";
 import riskpowerLogo from "@/imports/01_RiskPower_Logo-blue.png";
 
@@ -59,46 +59,51 @@ export default function App() {
     if (Object.keys(e).length === 0) setSubmitted(true);
   };
 
-  const selectedLabels = useMemo(
-    () => PRODUCTS.filter((p) => selected.includes(p.id)).map((p) => p.label),
-    [selected],
-  );
-
   if (submitted) {
     return (
       <div className="min-h-full bg-brand-tint flex items-center justify-center px-6">
         <div className="w-full max-w-[440px] rounded-3xl bg-white p-9 text-center shadow-[0_24px_60px_-24px_rgba(0,92,151,0.35)]">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand text-white">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M4 12.5l5 5 11-11"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          {/* animated success emblem */}
+          <div className="relative mx-auto mb-7 h-24 w-24">
+            <span className="absolute inset-2 rounded-full bg-brand-tint" />
+            <span className="absolute inset-0 rounded-full border border-brand/15" />
+            <div className="absolute inset-4 flex items-center justify-center rounded-full bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_10px_24px_-8px_rgba(0,92,151,0.7)]">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 12.5l5 5 11-11"
+                  stroke="currentColor"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength={1}
+                  className="[stroke-dasharray:1] [stroke-dashoffset:1] animate-[dash_0.6s_ease-out_0.25s_forwards]"
+                />
+              </svg>
+            </div>
+            {/* orbiting accent dots */}
+            <span className="absolute right-1 top-3 h-2 w-2 rounded-full bg-brand/40" />
+            <span className="absolute bottom-2 left-2 h-1.5 w-1.5 rounded-full bg-brand/25" />
           </div>
-          <h2 className="text-xl font-bold text-brand-dark">申请已提交</h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            我们已收到 <span className="font-semibold text-slate-700">{name}</span> 的试用申请，
-            顾问将尽快与您联系，为您开通试用环境。
+          <h2 className="text-xl font-bold text-brand-dark">
+            申请已提交，进入试用演示
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-500">
+            移动端仅做流程展示，如需体验完整功能，请移步至展台中央，或个人 PC 端访问{" "}
+            <a
+              href="https://www.riskpower.risk5u.cn/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-brand underline-offset-2 hover:underline"
+            >
+              https://www.riskpower.risk5u.cn/
+            </a>
+            （账号密码已发送至您的手机短信）。
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {selectedLabels.map((l) => (
-              <span
-                key={l}
-                className="rounded-full bg-brand-tint px-3 py-1 text-xs font-medium text-brand"
-              >
-                {l}
-              </span>
-            ))}
-          </div>
           <button
             onClick={() => setSubmitted(false)}
-            className="mt-8 text-sm font-medium text-brand underline-offset-4 hover:underline"
+            className="mt-7 w-full rounded-xl bg-brand py-3.5 text-[15px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(0,92,151,0.7)] transition-transform active:scale-[0.98]"
           >
-            返回修改
+            确定
           </button>
         </div>
       </div>
